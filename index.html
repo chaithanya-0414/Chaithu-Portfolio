@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chaithu's Portfolio | P. Krishna Naga Chaithanya</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;family=Roboto+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#544438",
+                        "on-secondary": "#2f3131",
+                        "on-primary": "#4d2600",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-tint": "#ffb77d",
+                        "on-tertiary-container": "#414141",
+                        "tertiary-container": "#afadad",
+                        "secondary": "#c6c6c6",
+                        "inverse-primary": "#904d00",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "on-surface-variant": "#d9c2b3",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "on-secondary-fixed-variant": "#454747",
+                        "primary": "#ffbb84",
+                        "inverse-on-surface": "#313030",
+                        "on-tertiary": "#303030",
+                        "on-primary-fixed": "#2f1500",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "tertiary-fixed": "#e4e2e1",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-container": "#454747",
+                        "on-secondary-container": "#b5b5b5",
+                        "on-primary-fixed-variant": "#6e3900",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#cbc8c8",
+                        "primary-fixed-dim": "#ffb77d",
+                        "outline": "#a18d7f",
+                        "surface-container-highest": "#353534",
+                        "surface-bright": "#3a3939",
+                        "on-primary-container": "#663500",
+                        "background": "#131313",
+                        "surface-container": "#201f1f",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-surface": "#e5e2e1",
+                        "error": "#ffb4ab",
+                        "on-background": "#e5e2e1",
+                        "primary-fixed": "#ffdcc3",
+                        "primary-container": "#f2994a",
+                        "surface-container-high": "#2a2a2a",
+                        "on-error": "#690005",
+                        "surface-dim": "#131313",
+                        "error-container": "#93000a",
+                        "surface-variant": "#353534",
+                        "surface": "#131313"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Roboto Mono"]
+                    },
+                    "animation": {
+                        "marquee": "marquee 25s linear infinite",
+                        "gradient": "gradient 8s linear infinite",
+                    },
+                    "keyframes": {
+                        "marquee": {
+                            "0%": { transform: "translateX(0%)" },
+                            "100%": { transform: "translateX(-100%)" },
+                        },
+                        "gradient": {
+                            "0%, 100%": { "background-position": "0% 50%" },
+                            "50%": { "background-position": "100% 50%" },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .spotlight-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .spotlight-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(242, 153, 74, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        #mouse-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 187, 132, 0.08) 0%, rgba(255, 187, 132, 0.03) 30%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+        }
+        .marquee-content {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-around;
+            min-width: 100%;
+            gap: 4rem;
+            padding-right: 4rem;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30 selection:text-primary">
+<div id="mouse-glow"></div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#131313]/80 backdrop-blur-xl px-6 md:px-12 py-4 md:py-6 max-w-full mx-auto shadow-sm">
+<div class="flex justify-between items-center w-full">
+<div class="text-xl md:text-2xl font-black text-[#ffbb84] uppercase tracking-widest z-20">Chaithu's Portfolio</div>
+<!-- Desktop Menu -->
+<div class="hidden md:flex items-center gap-8 font-['Inter'] tracking-tight font-bold">
+<a class="text-[#c6c6c6] hover:text-[#ffbb84] transition-colors" href="#about">Education</a>
+<a class="text-[#c6c6c6] hover:text-[#ffbb84] transition-colors" href="#works">Works</a>
+<a class="text-[#c6c6c6] hover:text-[#ffbb84] transition-colors" href="#experience">Experience</a>
+<a class="text-[#c6c6c6] hover:text-[#ffbb84] transition-colors" href="#skills">Skills</a>
+<a class="text-[#c6c6c6] hover:text-[#ffbb84] transition-colors" href="#freelance">Freelance Work</a>
+<a class="text-[#ffbb84] border-b-2 border-[#ffbb84] pb-1" href="#connect">Connect</a>
+</div>
+<!-- Mobile Hamburger Button -->
+<button id="mobileMenuBtn" class="md:hidden text-[#ffbb84] p-2 focus:outline-none z-20">
+    <i class="fas fa-bars text-2xl"></i>
+</button>
+</div>
+<!-- Mobile Menu Overlay -->
+<div id="mobileMenu" class="md:hidden hidden flex-col items-center gap-6 pt-24 pb-8 border-b-2 border-[#ffbb84]/20 font-['Inter'] tracking-tight font-bold bg-[#131313]/98 backdrop-blur-3xl absolute top-0 left-0 w-full shadow-2xl h-screen z-10 transition-all">
+<a class="mobile-link text-[#c6c6c6] hover:text-[#ffbb84] transition-colors text-2xl" href="#about">Education</a>
+<a class="mobile-link text-[#c6c6c6] hover:text-[#ffbb84] transition-colors text-2xl" href="#works">Works</a>
+<a class="mobile-link text-[#c6c6c6] hover:text-[#ffbb84] transition-colors text-2xl" href="#experience">Experience</a>
+<a class="mobile-link text-[#c6c6c6] hover:text-[#ffbb84] transition-colors text-2xl" href="#skills">Skills</a>
+<a class="mobile-link text-[#c6c6c6] hover:text-[#ffbb84] transition-colors text-2xl" href="#freelance">Freelance Work</a>
+<a class="mobile-link text-[#ffbb84] border-b-2 border-[#ffbb84] pb-1 text-2xl" href="#connect">Connect</a>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="min-h-[100svh] md:min-h-[921px] flex flex-col justify-center px-6 md:px-12 py-24 md:py-32 relative overflow-hidden">
+<div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+<div class="z-10 text-center md:text-left mt-12 md:mt-0">
+<div class="font-label text-primary tracking-widest uppercase mb-4 text-sm md:text-base">AI/ML Developer & Data Analyst who</div>
+<h1 class="text-5xl md:text-6xl font-black tracking-tighter leading-tight mb-6">
+    Building <span class="text-primary whitespace-nowrap">data-driven</span> dashboards & <span class="underline decoration-primary decoration-4 underline-offset-4 whitespace-nowrap">ML projects.</span>
+</h1>
+<p class="text-secondary text-xl mb-12 max-w-lg leading-relaxed">
+    Because numbers tell the best stories—you just need the right AI architecture to read them.
+</p>
+
+<div class="mb-12">
+    <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-on-surface mb-3 min-h-[96px] md:min-h-[60px] leading-tight">
+        I'm a <span id="typewriter" class="whitespace-nowrap"></span><span class="inline-block align-middle w-[6px] h-[36px] md:h-[46px] ml-1 -mt-2 bg-[#b066ff] animate-[pulse_1s_ease-in-out_infinite]"></span>
+    </h2>
+    <p class="text-secondary text-lg mt-4">Currently, I am a <span class="font-bold text-[#b066ff]">B.Tech CSE Student</span> @ Bharath University</p>
+</div>
+
+<div class="flex flex-wrap justify-center md:justify-start items-center gap-6">
+    <div class="flex gap-4">
+        <a href="https://www.linkedin.com/in/chaithanya04" target="_blank" rel="noopener noreferrer" class="w-14 h-14 rounded-full border border-outline-variant bg-[#1a1423] flex items-center justify-center text-on-surface hover:border-[#b066ff] hover:text-[#b066ff] transition-all shadow-sm">
+            <i class="fab fa-linkedin-in text-xl"></i>
+        </a>
+        <a href="https://github.com/Chaithanya-0414" target="_blank" rel="noopener noreferrer" class="w-14 h-14 rounded-full border border-outline-variant bg-[#1a1423] flex items-center justify-center text-on-surface hover:border-[#b066ff] hover:text-[#b066ff] transition-all shadow-sm">
+            <i class="fab fa-github text-xl"></i>
+        </a>
+        <a href="mailto:ponnekantichaithanya0414@gmail.com" class="w-14 h-14 rounded-full border border-outline-variant bg-[#1a1423] flex items-center justify-center text-on-surface hover:border-[#b066ff] hover:text-[#b066ff] transition-all shadow-sm">
+            <i class="fas fa-envelope text-xl"></i>
+        </a>
+    </div>
+    
+    <a href="images/resume.pdf" target="_blank" rel="noopener noreferrer" class="bg-[#b066ff] text-white px-8 py-4 rounded-xl font-bold flex items-center gap-3 hover:shadow-[0_0_25px_rgba(176,102,255,0.4)] transition-all transform hover:-translate-y-1 ml-4 shadow-lg">
+        <i class="fas fa-file-alt text-xl"></i> Resume
+    </a>
+</div>
+</div>
+<div class="relative hidden md:block">
+<div class="aspect-square rounded-full bg-surface-container-high relative overflow-hidden shadow-2xl">
+<img alt="P. Krishna Naga Chaithanya" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" src="images/profile.webp"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+<!-- Decorative element -->
+<div class="absolute -bottom-6 -left-6 w-32 h-32 bg-primary/20 rounded-xl blur-3xl"></div>
+</div>
+</div>
+</section>
+<!-- Infinite Skill Belt -->
+<div class="w-full bg-surface-container-low border-y border-outline-variant/10 py-10 overflow-hidden">
+<div class="marquee-container">
+<div class="marquee-content animate-marquee whitespace-nowrap">
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">code</span> PYTHON
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">psychology</span> MACHINE LEARNING
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">insights</span> DATA ANALYTICS
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">query_stats</span> POWER BI
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">transform</span> ANTIGRAVITY
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">terminal</span> STREAMLIT
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">database</span> SQL
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">cloud</span> Automation
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">smart_toy</span> AI/ML
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">auto_awesome</span> PROMPT ENGINEERING
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">memory</span> AI-ASSISTED DEV
+            </div>
+</div>
+<!-- Duplicated content for infinite loop -->
+<div class="marquee-content animate-marquee whitespace-nowrap">
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">code</span> PYTHON
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">psychology</span> MACHINE LEARNING
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">insights</span> DATA ANALYTICS
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">query_stats</span> POWER BI
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">transform</span> ANTIGRAVITY
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">terminal</span> STREAMLIT
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">database</span> SQL
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">cloud</span> Automation
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">smart_toy</span> AI/ML
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">auto_awesome</span> PROMPT ENGINEERING
+            </div>
+<div class="flex items-center gap-4 text-[#c6c6c6] font-label uppercase tracking-widest text-sm">
+<span class="material-symbols-outlined text-primary text-xl">memory</span> AI-ASSISTED DEV
+            </div>
+</div>
+</div>
+</div>
+<!-- About & Education (The Curator Style) -->
+<section class="px-6 md:px-12 py-16 md:py-24 bg-surface-container-low" id="about">
+<div class="max-w-6xl mx-auto grid md:grid-cols-12 gap-10 md:gap-16">
+<div class="md:col-span-5 flex flex-col justify-center">
+<h2 class="text-4xl font-black tracking-tight mb-8">About Me</h2>
+<p class="text-secondary text-lg leading-relaxed mb-8">
+    Highly motivated <span class="text-on-background font-bold">B.Tech CSE Student</span> specializing in <span class="text-primary font-bold underline decoration-primary/30 underline-offset-4">AI, ML, and Data Analytics</span>. I bridge the gap between technical complexity and user-centric visualization.
+</p>
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-lg">school</span>
+<div>
+<div class="font-bold text-on-surface">Bharath University</div>
+<div class="text-secondary text-sm">BIHER · Chennai, India</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md:col-span-7 space-y-6">
+<div class="p-8 rounded-2xl bg-surface-container-highest spotlight-card border border-outline-variant/10">
+<span class="font-label text-[10px] text-primary mb-3 block tracking-widest font-black uppercase">Education</span>
+<h3 class="text-xl md:text-2xl font-bold mb-2">B.Tech in Computer Science</h3>
+<p class="text-secondary text-sm md:text-base">Focusing on AI/ML architectures and Big Data pipelines.</p>
+</div>
+<div class="p-8 rounded-2xl bg-surface-container-highest spotlight-card border border-outline-variant/10">
+<span class="font-label text-[10px] text-primary mb-3 block tracking-widest font-black uppercase">Technical Foundation</span>
+<h3 class="text-xl md:text-2xl font-bold mb-2">Diploma in Mechanical Engineering</h3>
+<p class="text-secondary text-sm md:text-base">Technical education focusing on systems engineering and precision logistics.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Skill Web (Asymmetric Grid) -->
+<section class="px-6 md:px-12 py-16 md:py-24" id="skills">
+<div class="max-w-6xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-5xl font-black tracking-tighter mb-4">Core Expertise</h2>
+<p class="text-secondary uppercase tracking-[0.2em] font-label text-sm">A technical arsenal for the digital age</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<!-- Skill Item 1 -->
+<div class="p-10 rounded-2xl bg-surface-container-high border border-outline-variant/10 flex flex-col items-center justify-center text-center group hover:bg-surface-container-highest transition-all duration-300">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">code</span>
+</div>
+<h4 class="font-bold text-xl mb-2">Python</h4>
+<p class="text-secondary text-sm">Advanced scripting &amp; automation</p>
+</div>
+<!-- Skill Item 2 -->
+<div class="p-10 rounded-2xl bg-surface-container-high border border-outline-variant/10 flex flex-col items-center justify-center text-center group hover:bg-surface-container-highest transition-all duration-300">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">psychology</span>
+</div>
+<h4 class="font-bold text-xl mb-2">Machine Learning</h4>
+<p class="text-secondary text-sm">Predictive modeling &amp; Neural Nets</p>
+</div>
+<!-- Skill Item 3 -->
+<div class="p-10 rounded-2xl bg-surface-container-high border border-outline-variant/10 flex flex-col items-center justify-center text-center group hover:bg-surface-container-highest transition-all duration-300">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">insights</span>
+</div>
+<h4 class="font-bold text-xl mb-2">Data Analytics</h4>
+<p class="text-secondary text-sm">Statistical insight discovery</p>
+</div>
+<!-- Skill Item 4 -->
+<div class="p-10 rounded-2xl bg-surface-container-high border border-outline-variant/10 flex flex-col items-center justify-center text-center group hover:bg-surface-container-highest transition-all duration-300">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">query_stats</span>
+</div>
+<h4 class="font-bold text-xl mb-2">Power BI</h4>
+<p class="text-secondary text-sm">Enterprise visual reporting</p>
+</div>
+<!-- Row 2 -->
+<div class="p-10 rounded-2xl bg-surface-container-high border border-outline-variant/10 flex flex-col items-center justify-center text-center group hover:bg-surface-container-highest transition-all duration-300">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">auto_awesome</span>
+</div>
+<h4 class="font-bold text-xl mb-2">AI-Assisted Dev</h4>
+<p class="text-secondary text-sm">Prompt Engineering</p>
+</div>
+<div class="p-10 rounded-2xl bg-surface-container-high border border-outline-variant/10 flex flex-col items-center justify-center text-center group hover:bg-surface-container-highest transition-all duration-300">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">terminal</span>
+</div>
+<h4 class="font-bold text-xl mb-2">Streamlit</h4>
+<p class="text-secondary text-sm">Rapid AI app development</p>
+</div>
+<div class="col-span-2 p-10 rounded-2xl bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 flex flex-col items-start justify-center">
+<h4 class="font-bold text-2xl mb-4">Analytical Mindset</h4>
+<p class="text-secondary text-lg">Combining mechanical precision with data-driven decision making to solve real-world problems.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Experience & Certifications -->
+<section class="px-6 md:px-12 py-16 md:py-24 bg-surface-container-low" id="experience">
+<div class="max-w-6xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 gap-6 md:gap-8">
+<div>
+<h2 class="text-5xl font-black tracking-tighter">Experience</h2>
+<p class="text-secondary mt-4 max-w-md">Professional training and certifications that define my technical journey.</p>
+</div>
+</div>
+<div class="space-y-6">
+            <!-- Experience 0: Technical Consultant -->
+            <div class="flex flex-col md:flex-row gap-6 md:gap-8 p-8 md:p-10 rounded-3xl bg-surface-container-highest group/card hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+                <div class="md:w-48 font-label text-primary flex flex-col gap-4">
+                    <span class="text-sm font-bold tracking-tighter opacity-80 uppercase leading-none">2024 - Present</span>
+                    <div class="w-14 h-14 rounded-2xl bg-white/5 border border-outline-variant/20 flex items-center justify-center p-2 hidden md:flex group-hover/card:scale-110 transition-transform relative overflow-hidden">
+                        <span class="material-symbols-outlined text-primary text-3xl z-10">groups</span>
+                        <!-- Background Glow Element -->
+                        <div class="absolute inset-0 bg-primary/10 blur-xl opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-2xl font-black group-hover/card:text-primary transition-colors">Freelance Technical Consultant & AI Mentor</h3>
+                    <div class="flex flex-wrap gap-3 mt-3 mb-6">
+                        <span class="text-secondary font-bold text-sm">Academic Research Support</span>
+                        <span class="px-3 py-1 rounded-full bg-white/5 border border-outline-variant/20 text-[10px] font-bold uppercase tracking-widest text-[#ffbb84]/80">Project Consulting</span>
+                    </div>
+                    <p class="text-secondary leading-relaxed max-w-2xl">
+                        Consulted on and developed bespoke AI/ML architectures for engineering capstone projects and academic research. Guided project teams through research methodology, system design, and final technical implementations.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Experience 1: WeMakeScholars -->
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 p-8 md:p-10 rounded-3xl bg-surface-container-highest group/card hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="md:w-48 font-label text-primary flex flex-col gap-4">
+<span class="text-sm font-bold tracking-tighter opacity-80">Dec 2025 - Jan 2026</span>
+<div class="w-14 h-14 rounded-2xl bg-white/5 border border-outline-variant/20 flex items-center justify-center p-2 hidden md:flex group-hover/card:scale-110 transition-transform relative overflow-hidden">
+<img src="images/wemakescholars-logo.png" alt="WeMakeScholars Logo" class="w-full h-auto object-contain brightness-110 z-10" onerror="this.src='https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/school/default/24px.svg'; this.classList.add('invert')">
+</div>
+</div>
+<div class="flex-1">
+<h3 class="text-xl md:text-2xl font-black mb-2 tracking-tight group-hover/card:text-primary transition-colors">Campus Delegate – HEST 2025</h3>
+<div class="flex flex-wrap items-center gap-3 text-secondary text-sm mb-4">
+<span class="font-bold text-on-surface">WeMakeScholars</span>
+<span>·</span>
+<span>Internship</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-low text-[10px] uppercase font-black border border-outline-variant/20">Remote</span>
+</div>
+<p class="text-secondary/80 text-sm md:text-base leading-relaxed">As a Campus Delegate for HEST 2025, India’s largest Study Abroad Scholarship Test, I handled outreach and awareness activities for students planning to study abroad.</p>
+</div>
+</div>
+
+<!-- Experience 2: Embrizon -->
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 p-8 md:p-10 rounded-3xl bg-surface-container-highest group/card hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="md:w-48 font-label text-primary flex flex-col gap-4">
+<span class="text-sm font-bold tracking-tighter opacity-80">Nov 2024 - Jan 2025</span>
+<div class="w-14 h-14 rounded-2xl bg-white/5 border border-outline-variant/20 flex items-center justify-center p-2 hidden md:flex group-hover/card:scale-110 transition-transform relative overflow-hidden">
+<img src="images/embrizon-logo.png" alt="Embrizon Logo" class="w-full h-auto object-contain brightness-110 z-10" onerror="this.src='https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/verified/default/24px.svg'; this.classList.add('invert')">
+</div>
+</div>
+<div class="flex-1">
+<h3 class="text-xl md:text-2xl font-black mb-2 tracking-tight group-hover/card:text-primary transition-colors">Machine Learning with Python</h3>
+<div class="flex flex-wrap items-center gap-3 text-secondary text-sm mb-4">
+<span class="font-bold text-on-surface">Embrizon Technologies (AICTE)</span>
+<span>·</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-low text-[10px] uppercase font-black border border-outline-variant/20">Industrial Certification</span>
+</div>
+<p class="text-secondary/80 text-sm md:text-base leading-relaxed">Intensive training in machine learning algorithms, model development, and deployment using Python and scikit-learn.</p>
+</div>
+</div>
+
+<!-- Experience 3: RANE -->
+<div class="flex flex-col md:flex-row gap-6 md:gap-8 p-8 md:p-10 rounded-3xl bg-surface-container-highest group/card hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="md:w-48 font-label text-primary flex flex-col gap-4">
+<span class="text-sm font-bold tracking-tighter opacity-80">Dec 2022 - Jun 2023</span>
+<div class="w-14 h-14 rounded-2xl bg-white/5 border border-outline-variant/20 flex items-center justify-center p-2 hidden md:flex group-hover/card:scale-110 transition-transform relative overflow-hidden">
+<img src="images/rane-logo.png" alt="RANE Logo" class="w-full h-auto object-contain brightness-110 z-10" onerror="this.src='https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/precision_manufacturing/default/24px.svg'; this.classList.add('invert')">
+</div>
+</div>
+<div class="flex-1">
+<h3 class="text-xl md:text-2xl font-black mb-2 tracking-tight group-hover/card:text-primary transition-colors">Industrial Training – Inspection Team</h3>
+<div class="flex flex-wrap items-center gap-3 text-secondary text-sm mb-4">
+<span class="font-bold text-on-surface">RANE</span>
+<span>·</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-low text-[10px] uppercase font-black border border-outline-variant/20">On-site Training</span>
+</div>
+<p class="text-secondary/80 text-sm md:text-base leading-relaxed">Collaborated with inspection team to ensure quality compliance of 100+ components weekly. Identified deviations, supporting a 15% reduction in rework cases.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Projects (Bento Grid) -->
+<section class="px-6 md:px-12 py-16 md:py-24" id="works">
+<div class="max-w-6xl mx-auto">
+<h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-12 md:mb-16 text-center">Featured Projects</h2>
+<div class="grid grid-cols-1 md:grid-cols-6 gap-6 h-auto">
+<!-- New Project: Lost & Found AI -->
+<div class="md:col-span-3 md:row-span-1 bg-surface-container-high rounded-3xl overflow-hidden group spotlight-card flex flex-col">
+<div class="h-64 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Lost & Found Campus Platform" src="images/project images/lost_and_found.png"/>
+</div>
+<div class="p-8 flex flex-col flex-1 justify-between">
+<div>
+<div class="text-primary text-xs font-bold tracking-widest uppercase mb-2">AI-Powered Full-Stack App</div>
+<h3 class="text-2xl font-bold mb-3">Lost & Found Campus Platform</h3>
+<p class="text-secondary text-sm mb-6 max-w-xl">A smart campus platform to efficiently track lost items. Integrated an AI engine using PyTorch and ResNet18 to extract image features and generate exact matches based on uploaded found images via Cosine Similarity.</p>
+</div>
+<div class="flex flex-wrap gap-2 mb-4 mt-auto">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">React</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">Node / FastAPI</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">PyTorch</span>
+</div>
+<div class="flex gap-4">
+<a href="https://lnkd.in/gdRK_AHd" target="_blank" class="text-secondary hover:text-primary transition-colors flex items-center gap-1 font-label text-sm" title="View Document">View Doc <span class="material-symbols-outlined text-sm">open_in_new</span></a>
+</div>
+</div>
+</div>
+<!-- Project 1 -->
+<div class="md:col-span-3 md:row-span-1 bg-surface-container-high rounded-3xl overflow-hidden group spotlight-card flex flex-col">
+<div class="h-64 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Tumor Detection" src="images/project images/photo-1576086213369-97a306d36557.jpg"/>
+</div>
+<div class="p-8 flex flex-col flex-1 justify-between">
+<div>
+<div class="text-primary text-xs font-bold tracking-widest uppercase mb-2">AI &amp; Healthcare</div>
+<h3 class="text-2xl font-bold mb-3">Tumor Detection System</h3>
+<p class="text-secondary text-sm mb-6">AI-powered system that identifies tumors in medical scans and highlights them with color-coded boxes. Features ML model integration with a professional Streamlit UI.</p>
+</div>
+<div class="flex flex-wrap gap-2 mb-4 mt-auto">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">Python</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">Computer Vision</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">Streamlit</span>
+</div>
+<div class="flex gap-4">
+<a href="https://advanced-medical-imaging-analysis-system-6ys8hzhrt4b29c5ytwyuy.streamlit.app/" target="_blank" class="text-secondary hover:text-primary transition-colors flex items-center gap-1 font-label text-sm" title="Version 1">V1 <span class="material-symbols-outlined text-sm">open_in_new</span></a>
+<a href="https://lunginsight-ai-chaithanya.streamlit.app/" target="_blank" class="text-secondary hover:text-primary transition-colors flex items-center gap-1 font-label text-sm" title="Version 2">V2 <span class="material-symbols-outlined text-sm">open_in_new</span></a>
+</div>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="md:col-span-3 md:row-span-1 bg-surface-container-high rounded-3xl overflow-hidden group spotlight-card flex flex-col">
+<div class="h-64 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="EcoBin-X" src="images/project images/photo-1532996122724-e3c354a0b15b.jpg"/>
+</div>
+<div class="p-8 flex flex-col flex-1 justify-between">
+<div>
+<div class="text-primary text-xs font-bold tracking-widest uppercase mb-2">IoT Solution 🏆</div>
+<h3 class="text-2xl font-bold mb-3">EcoBin-X: Smart Waste</h3>
+<p class="text-secondary text-sm mb-6">Award-winning IoT solution for urban waste monitoring. Optimized collection routes reducing municipal fuel costs by 12%. Secured 2nd place in intercollegiate competition.</p>
+</div>
+<div class="flex flex-wrap gap-2 mb-4 mt-auto">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">IoT Sensors</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">Python</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">Real-time</span>
+</div>
+<div class="flex gap-4">
+<a href="https://chaithanya-0414.github.io/EcoBin-X-Smart-Waste-Management-System/" target="_blank" class="text-secondary hover:text-primary transition-colors" title="Live Preview"><span class="material-symbols-outlined">open_in_new</span></a>
+</div>
+</div>
+</div>
+<!-- Project 3 -->
+<div class="md:col-span-3 md:row-span-1 bg-surface-container-high rounded-3xl overflow-hidden group spotlight-card flex flex-col">
+<div class="h-64 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="University Analytics" src="images/project images/photo-1460925895917-afdab827c52f.jpg"/>
+</div>
+<div class="p-8 flex flex-col flex-1 justify-between">
+<div>
+<div class="text-primary text-xs font-bold tracking-widest uppercase mb-2">Featured Project</div>
+<h3 class="text-2xl font-bold mb-3">University Analytics Dashboard</h3>
+<p class="text-secondary text-sm mb-6">AI-powered decision support system offering real-time filtering, cost analysis, and personalized university ranking based on student preferences. Features comprehensive data on German universities.</p>
+</div>
+<div class="flex gap-3 mb-4 flex-wrap mt-auto">
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-xs font-label">JavaScript</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-xs font-label">Chart.js</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-xs font-label">AI Scoring</span>
+</div>
+<div class="flex gap-4">
+<a href="https://github.com/Chaithanya-0414/University-Dashboard" target="_blank" class="text-secondary hover:text-primary transition-colors" title="GitHub"><span class="material-symbols-outlined">code</span></a>
+<a href="https://chaithanya-0414.github.io/University-Dashboard/" target="_blank" class="text-secondary hover:text-primary transition-colors" title="Live Preview"><span class="material-symbols-outlined">open_in_new</span></a>
+</div>
+</div>
+</div>
+<!-- Project 4 -->
+<div class="md:col-span-3 md:row-span-1 bg-surface-container-high rounded-3xl overflow-hidden group spotlight-card flex flex-col">
+<div class="h-64 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="TN Politics" src="images/project images/photo-1543286386-713bdd548da4.jpg"/>
+</div>
+<div class="p-8 flex flex-col flex-1 justify-between">
+<div>
+<div class="text-primary text-xs font-bold tracking-widest uppercase mb-2">Featured Project</div>
+<h3 class="text-2xl font-bold mb-3">TN Political Analytics</h3>
+<p class="text-secondary text-sm mb-6">Interactive dashboard providing deep insights into the digital political arena of Tamil Nadu. Features leader comparison, platform strategy analysis, and reach metrics.</p>
+</div>
+<div class="flex gap-3 mb-4 flex-wrap mt-auto">
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-xs font-label">Data Viz</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-xs font-label">Dashboard</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-xs font-label">Politics</span>
+</div>
+<div class="flex gap-4">
+<a href="https://github.com/Chaithanya-0414/tn-politicsdashboard" target="_blank" class="text-secondary hover:text-primary transition-colors" title="GitHub"><span class="material-symbols-outlined">code</span></a>
+<a href="https://chaithanya-0414.github.io/tn-politicsdashboard/" target="_blank" class="text-secondary hover:text-primary transition-colors" title="Live Preview"><span class="material-symbols-outlined">open_in_new</span></a>
+</div>
+</div>
+</div>
+<!-- Project 5 -->
+<div class="md:col-span-3 md:row-span-1 bg-surface-container-high rounded-3xl overflow-hidden group spotlight-card flex flex-col">
+<div class="h-64 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Multilingual AI Translator" src="images/project images/photo-1456513080510-7bf3a84b82f8.jpg"/>
+</div>
+<div class="p-8 flex flex-col flex-1 justify-between">
+<div>
+<div class="text-primary text-xs font-bold tracking-widest uppercase mb-2">NLP Tool</div>
+<h3 class="text-2xl font-bold mb-3">Multilingual AI Translator</h3>
+<p class="text-secondary text-sm mb-6">Python-Streamlit app supporting 10+ Indian languages for text and speech translation. Integrated Google Translate and gTTS for real-time communication.</p>
+</div>
+<div class="flex flex-wrap gap-2 mb-4 mt-auto">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">Python</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">NLP</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-label">gTTS</span>
+</div>
+<div class="flex gap-4">
+<a href="https://nigflmlytybmuh3bmwifnj.streamlit.app/" target="_blank" class="text-secondary hover:text-primary transition-colors" title="Live Preview"><span class="material-symbols-outlined">open_in_new</span></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Freelance Work Section -->
+<section class="px-6 md:px-12 py-16 md:py-24 bg-surface-container-low overflow-hidden relative" id="freelance">
+<div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
+<div class="md:w-1/2 w-full text-center md:text-left">
+<h2 class="text-3xl md:text-4xl font-black tracking-tighter mb-4 leading-tight">Presentation Work Repository</h2>
+<p class="text-secondary text-base md:text-lg leading-relaxed mb-6">
+    A comprehensive collection of my freelance presentation projects across various domains. Includes corporate decks, academic research, and creative pitches.
+</p>
+
+<!-- Toggle Button -->
+<button id="toggleDocsBtn" class="mb-6 bg-[#1a1423] hover:shadow-[0_0_15px_rgba(176,102,255,0.3)] border border border-[#b066ff]/20 text-white px-5 py-2.5 rounded-full flex items-center gap-2 w-max cursor-pointer font-bold transition-all text-sm">
+    <i id="toggleDocsIcon" class="fas fa-eye"></i> <span id="toggleDocsText">View Documents</span>
+</button>
+
+<div class="flex flex-wrap items-center gap-4 mb-4 text-secondary font-bold text-sm">
+    <span>All Domains</span>
+    <span>PPT &amp; Canva</span>
+    <span>Portfolio Folder</span>
+</div>
+
+<!-- File List Container -->
+<div id="fileListWrapper" class="file-list-container hidden w-full mt-4">
+<!-- AUTO-GENERATED-START -->
+<ul class="file-list flex flex-col gap-4">
+
+                                <li class="file-item group bg-[#1a1423] hover:bg-[#251d33] border border-[#b066ff]/20 hover:border-[#b066ff]/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(176,102,255,0.15)] hover:-translate-y-1">
+                                    <a href="freelance_work/Air pollution.pdf" target="_blank" class="file-link flex items-center p-5 gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-[#b066ff]/10 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-file-pdf file-icon text-[#b066ff] text-xl"></i>
+                                        </div>
+                                        <span class="file-name flex-1 text-on-background font-bold text-sm md:text-base truncate">Air pollution.pdf</span>
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-highest group-hover:bg-[#b066ff] text-secondary group-hover:text-background flex items-center justify-center transition-colors shrink-0">
+                                            <i class="fas fa-download download-icon text-sm"></i>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="file-item group bg-[#1a1423] hover:bg-[#251d33] border border-[#b066ff]/20 hover:border-[#b066ff]/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(176,102,255,0.15)] hover:-translate-y-1">
+                                    <a href="freelance_work/Black and Green Modern Engineering Presentation.pdf" target="_blank" class="file-link flex items-center p-5 gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-[#b066ff]/10 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-file-pdf file-icon text-[#b066ff] text-xl"></i>
+                                        </div>
+                                        <span class="file-name flex-1 text-on-background font-bold text-sm md:text-base truncate">Black and Green Modern Engineering Presentation.pdf</span>
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-highest group-hover:bg-[#b066ff] text-secondary group-hover:text-background flex items-center justify-center transition-colors shrink-0">
+                                            <i class="fas fa-download download-icon text-sm"></i>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="file-item group bg-[#1a1423] hover:bg-[#251d33] border border-[#b066ff]/20 hover:border-[#b066ff]/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(176,102,255,0.15)] hover:-translate-y-1">
+                                    <a href="freelance_work/Black and White Modern Construction Company Presentation.pdf" target="_blank" class="file-link flex items-center p-5 gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-[#b066ff]/10 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-file-pdf file-icon text-[#b066ff] text-xl"></i>
+                                        </div>
+                                        <span class="file-name flex-1 text-on-background font-bold text-sm md:text-base truncate">Black and White Modern Construction Company Presentation.pdf</span>
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-highest group-hover:bg-[#b066ff] text-secondary group-hover:text-background flex items-center justify-center transition-colors shrink-0">
+                                            <i class="fas fa-download download-icon text-sm"></i>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="file-item group bg-[#1a1423] hover:bg-[#251d33] border border-[#b066ff]/20 hover:border-[#b066ff]/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(176,102,255,0.15)] hover:-translate-y-1">
+                                    <a href="freelance_work/GEOPOLYMER CONCRETE.pdf" target="_blank" class="file-link flex items-center p-5 gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-[#b066ff]/10 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-file-pdf file-icon text-[#b066ff] text-xl"></i>
+                                        </div>
+                                        <span class="file-name flex-1 text-on-background font-bold text-sm md:text-base truncate">GEOPOLYMER CONCRETE.pdf</span>
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-highest group-hover:bg-[#b066ff] text-secondary group-hover:text-background flex items-center justify-center transition-colors shrink-0">
+                                            <i class="fas fa-download download-icon text-sm"></i>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="file-item group bg-[#1a1423] hover:bg-[#251d33] border border-[#b066ff]/20 hover:border-[#b066ff]/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(176,102,255,0.15)] hover:-translate-y-1">
+                                    <a href="freelance_work/GREEN BUILDING TECHNOLOGY.pdf" target="_blank" class="file-link flex items-center p-5 gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-[#b066ff]/10 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-file-pdf file-icon text-[#b066ff] text-xl"></i>
+                                        </div>
+                                        <span class="file-name flex-1 text-on-background font-bold text-sm md:text-base truncate">GREEN BUILDING TECHNOLOGY.pdf</span>
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-highest group-hover:bg-[#b066ff] text-secondary group-hover:text-background flex items-center justify-center transition-colors shrink-0">
+                                            <i class="fas fa-download download-icon text-sm"></i>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="file-item group bg-[#1a1423] hover:bg-[#251d33] border border-[#b066ff]/20 hover:border-[#b066ff]/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(176,102,255,0.15)] hover:-translate-y-1">
+                                    <a href="freelance_work/Ground Water Hydrology Presentation.pdf" target="_blank" class="file-link flex items-center p-5 gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-[#b066ff]/10 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-file-pdf file-icon text-[#b066ff] text-xl"></i>
+                                        </div>
+                                        <span class="file-name flex-1 text-on-background font-bold text-sm md:text-base truncate">Ground Water Hydrology Presentation.pdf</span>
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-highest group-hover:bg-[#b066ff] text-secondary group-hover:text-background flex items-center justify-center transition-colors shrink-0">
+                                            <i class="fas fa-download download-icon text-sm"></i>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="file-item group bg-[#1a1423] hover:bg-[#251d33] border border-[#b066ff]/20 hover:border-[#b066ff]/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(176,102,255,0.15)] hover:-translate-y-1">
+                                    <a href="freelance_work/rein forced cement concrete.pdf" target="_blank" class="file-link flex items-center p-5 gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-[#b066ff]/10 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-file-pdf file-icon text-[#b066ff] text-xl"></i>
+                                        </div>
+                                        <span class="file-name flex-1 text-on-background font-bold text-sm md:text-base truncate">rein forced cement concrete.pdf</span>
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-highest group-hover:bg-[#b066ff] text-secondary group-hover:text-background flex items-center justify-center transition-colors shrink-0">
+                                            <i class="fas fa-download download-icon text-sm"></i>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="file-item group bg-[#1a1423] hover:bg-[#251d33] border border-[#b066ff]/20 hover:border-[#b066ff]/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(176,102,255,0.15)] hover:-translate-y-1">
+                                    <a href="freelance_work/RES PPT.pdf" target="_blank" class="file-link flex items-center p-5 gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-[#b066ff]/10 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-file-pdf file-icon text-[#b066ff] text-xl"></i>
+                                        </div>
+                                        <span class="file-name flex-1 text-on-background font-bold text-sm md:text-base truncate">RES PPT.pdf</span>
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-highest group-hover:bg-[#b066ff] text-secondary group-hover:text-background flex items-center justify-center transition-colors shrink-0">
+                                            <i class="fas fa-download download-icon text-sm"></i>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="file-item group bg-[#1a1423] hover:bg-[#251d33] border border-[#b066ff]/20 hover:border-[#b066ff]/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(176,102,255,0.15)] hover:-translate-y-1">
+                                    <a href="freelance_work/ROOF TRUSS .pdf" target="_blank" class="file-link flex items-center p-5 gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-[#b066ff]/10 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-file-pdf file-icon text-[#b066ff] text-xl"></i>
+                                        </div>
+                                        <span class="file-name flex-1 text-on-background font-bold text-sm md:text-base truncate">ROOF TRUSS .pdf</span>
+                                        <div class="w-10 h-10 rounded-full bg-surface-container-highest group-hover:bg-[#b066ff] text-secondary group-hover:text-background flex items-center justify-center transition-colors shrink-0">
+                                            <i class="fas fa-download download-icon text-sm"></i>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- AUTO-GENERATED-END -->
+</div>
+<br/>
+<a href="#connect" class="inline-block mt-4 bg-on-surface text-background px-12 py-5 rounded-full font-black text-lg hover:bg-primary transition-colors">
+                        Hire Me for Your Next Project
+                    </a>
+</div>
+<div class="md:w-1/2 relative">
+<div class="relative z-10 p-4 bg-surface-container-highest rounded-3xl shadow-2xl">
+<img class="rounded-2xl w-full" alt="Professional presentation design" src="images/ppt_thumb.webp"/>
+</div>
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-primary-container/20 rounded-full blur-[100px] -z-10"></div>
+</div>
+</div>
+</section>
+<!-- Connect Section -->
+<!-- Connect Section -->
+<section class="relative px-6 md:px-12 py-24 md:py-40 text-center overflow-hidden" id="connect">
+    <!-- Sophisticated Background Atmosphere -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-primary/10 rounded-full blur-[160px] opacity-40 -z-10"></div>
+    <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-secondary/5 rounded-full blur-[100px] -z-10"></div>
+    
+    <div class="max-w-5xl mx-auto z-10 block">
+        <div class="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold tracking-widest uppercase mb-8">
+            Available for New Projects
+        </div>
+        
+        <h2 class="text-5xl sm:text-7xl md:text-9xl font-black tracking-tighter mb-12 leading-[0.9] group">
+            Let's craft the <br/>
+            <span class="bg-gradient-to-r from-primary via-[#ffbb84] to-primary bg-clip-text text-transparent bg-[length:200%_auto] group-hover:animate-gradient transition-all block sm:inline mt-4 sm:mt-0">future together.</span>
+        </h2>
+
+        <div class="flex flex-col items-center gap-12 mt-16">
+            <!-- Glassmorphic Email Pill -->
+            <a href="mailto:ponnekantichaithanya0414@gmail.com" 
+               class="group relative flex items-center gap-4 px-8 md:px-10 py-5 md:py-6 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(255,187,132,0.15)] overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined">mail</span>
+                </div>
+                <div class="text-left">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-primary/60 mb-0.5 whitespace-nowrap">Drop a line</p>
+                    <p class="text-base md:text-xl font-bold text-on-surface">ponnekantichaithanya0414@gmail.com</p>
+                </div>
+                <span class="material-symbols-outlined text-primary/40 group-hover:text-primary transition-colors ml-4 hidden md:block">arrow_forward</span>
+            </a>
+
+            <!-- Social Action Row -->
+            <div class="flex flex-wrap justify-center gap-12 md:gap-16">
+                <a href="https://www.linkedin.com/in/chaithanya04" target="_blank" 
+                   class="flex items-center gap-3 px-6 py-4 rounded-xl bg-surface-container-high border border-outline-variant/10 hover:border-primary/30 hover:bg-surface-container-highest transition-all group scale-110 md:scale-125">
+                    <span class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors">link</span>
+                    <span class="font-bold">LinkedIn</span>
+                </a>
+                <a href="https://github.com/Chaithanya-0414" target="_blank" 
+                   class="flex items-center gap-3 px-6 py-4 rounded-xl bg-surface-container-high border border-outline-variant/10 hover:border-primary/30 hover:bg-surface-container-highest transition-all group scale-110 md:scale-125">
+                    <span class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors">terminal</span>
+                    <span class="font-bold">GitHub</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-[#f2994a]/15 bg-[#131313] flex flex-col md:flex-row justify-between items-center text-center md:text-left px-6 md:px-12 py-10 gap-6">
+<div class="text-lg font-bold text-[#c6c6c6]">CHAITHU'S PORTFOLIO</div>
+<div class="font-['Roboto_Mono'] text-sm uppercase tracking-tighter text-[#c6c6c6]">
+            © 2024 P. Krishna Naga Chaithanya. Built with Precision.
+        </div>
+<div class="flex gap-6 font-['Roboto_Mono'] text-sm uppercase tracking-tighter">
+<a class="text-[#c6c6c6] hover:text-[#ffbb84] transition-colors duration-200" href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+<a class="text-[#c6c6c6] hover:text-[#ffbb84] transition-colors duration-200" href="https://github.com/Chaithanya-0414" target="_blank">GitHub</a>
+<a class="text-[#c6c6c6] hover:text-[#ffbb84] transition-colors duration-200" href="mailto:ponnekantichaithanya0414@gmail.com">Email</a>
+</div>
+</footer>
+<script>
+    const glow = document.getElementById('mouse-glow');
+    window.addEventListener('mousemove', (e) => {
+        glow.style.opacity = '1';
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+    });
+    window.addEventListener('mouseout', () => {
+        glow.style.opacity = '0';
+    });
+
+    // Typewriter Effect
+    const words = ["AI/ML Developer", "Data Analyst", "Python Researcher", "ML Engineer"];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typewriterElement = document.getElementById("typewriter");
+
+    function typeEffect() {
+        const currentWord = words[wordIndex];
+        
+        if (isDeleting) {
+            typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
+            charIndex--;
+        } else {
+            typewriterElement.textContent = currentWord.substring(0, charIndex + 1);
+            charIndex++;
+        }
+
+        let typeSpeed = isDeleting ? 50 : 100;
+
+        if (!isDeleting && charIndex === currentWord.length) {
+            typeSpeed = 2000;
+            isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            typeSpeed = 500;
+        }
+
+        setTimeout(typeEffect, typeSpeed);
+    }
+    
+    if(typewriterElement) {
+        setTimeout(typeEffect, 1000); // Initial start delay
+    }
+
+    // Toggle Documents Logic
+    const toggleBtn = document.getElementById('toggleDocsBtn');
+    const docsWrapper = document.getElementById('fileListWrapper');
+    const toggleText = document.getElementById('toggleDocsText');
+    const toggleIcon = document.getElementById('toggleDocsIcon');
+
+    if (toggleBtn && docsWrapper) {
+        toggleBtn.addEventListener('click', () => {
+            if (docsWrapper.classList.contains('hidden')) {
+                docsWrapper.classList.remove('hidden');
+                toggleText.textContent = 'Hide Documents';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                docsWrapper.classList.add('hidden');
+                toggleText.textContent = 'View Documents';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        });
+    }
+
+    // Mobile Menu logic
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('flex');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-times text-2xl"></i>';
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars text-2xl"></i>';
+            }
+        });
+        
+        // Hide menu when clicking a link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars text-2xl"></i>';
+            });
+        });
+    }
+</script>
+</body></html>
