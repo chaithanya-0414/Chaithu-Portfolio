@@ -1099,7 +1099,7 @@
             </div>
 
             <div class="hx-bottom" data-hero-bottom data-hx-in>
-                <p class="hx-role">I'm a <span id="typewriter"></span><span class="hx-caret" aria-hidden="true"></span></p>
+                <p class="hx-role">I'm <span id="typewriter-article">an</span> <span id="typewriter"></span><span class="hx-caret" aria-hidden="true"></span></p>
                 <p class="hx-body">Turning AI capabilities into reliable software — from LLM-powered apps to scalable backend services.</p>
                 <div class="hx-actions">
                     <a href="#works" class="hx-btn" data-magnetic>View my work <span class="material-symbols-outlined">arrow_forward</span></a>
@@ -2165,14 +2165,22 @@
         });
 
         // Typewriter Effect
-        const words = ["AI Engineer", "ML Developer", "Python Developer", "Backend Engineer"];
+        // each title carries its own article: "AI" and "ML" are read with a vowel sound
+        const words = [
+            { article: "an", title: "AI Engineer" },
+            { article: "an", title: "ML Developer" },
+            { article: "a", title: "Python Developer" },
+            { article: "a", title: "Backend Engineer" }
+        ];
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
         const typewriterElement = document.getElementById("typewriter");
+        const articleElement = document.getElementById("typewriter-article");
 
         function typeEffect() {
-            const currentWord = words[wordIndex];
+            const currentWord = words[wordIndex].title;
+            if (!isDeleting && charIndex === 0 && articleElement) articleElement.textContent = words[wordIndex].article;
 
             if (isDeleting) {
                 typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
