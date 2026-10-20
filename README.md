@@ -15,7 +15,7 @@
 
 ## 🚀 About
 
-A modern, dark-themed personal portfolio website showcasing my work as an AI/ML Developer and Data Analyst. Built with performance and aesthetics in mind — featuring smooth animations, glassmorphism, a dynamic typewriter hero, and a fully responsive layout.
+A modern, dark-themed personal portfolio website showcasing my work as an AI/ML Developer and Data Analyst. Built with performance and aesthetics in mind — featuring a WebGL liquid-particle hero, a custom intro loader, smooth scrolling, glassmorphism, and a fully responsive layout.
 
 **Live at:** [chaithanya-0414.github.io/Chaithu-Portfolio](https://chaithanya-0414.github.io/Chaithu-Portfolio/)
 
@@ -26,7 +26,10 @@ A modern, dark-themed personal portfolio website showcasing my work as an AI/ML 
 | Feature | Description |
 |---|---|
 | 🎨 **Dark Theme** | Material Design 3 inspired color system with warm amber accents |
-| ⌨️ **Typewriter Hero** | Animated rotating titles with a blinking cursor |
+| 🌊 **Liquid Particle Hero** | An amber "neural filament" sculpture drawn at load (`js/neural-sculpture.js`), rebuilt from GPU-simulated particles that flow on their own and turn liquid under the cursor (WebGL2, static fallback) |
+| 🚀 **Intro Loader** | An AI core streaking through drifting stack keywords, handing off to the hero assembly |
+| 🧈 **Smooth Scroll** | Lenis smooth scrolling with GSAP ScrollTrigger hero exit and scroll progress line |
+| ⌨️ **Typewriter Role** | Rotating role titles in a terminal-style prompt |
 | 🧭 **Floating Dock Nav** | macOS-style navigation bar with icon scaling on hover |
 | 🖱️ **Mouse Glow** | Subtle radial glow that follows the cursor |
 | 🃏 **Project Carousel** | Horizontally scrollable project cards with live/demo links |
@@ -45,7 +48,7 @@ A modern, dark-themed personal portfolio website showcasing my work as an AI/ML 
 | **Styling** | [Tailwind CSS v3.4](https://tailwindcss.com/) with custom Material Design 3 color tokens |
 | **Typography** | [Inter](https://fonts.google.com/specimen/Inter) (headings/body) · [Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono) (labels) |
 | **Icons** | [Material Symbols](https://fonts.google.com/icons) · [Font Awesome 6](https://fontawesome.com/) |
-| **Animations** | Vanilla CSS + JavaScript (typewriter, marquee, sparkles, scroll-triggered reveals) |
+| **Animations** | [GSAP 3](https://gsap.com/) + ScrollTrigger, [Lenis](https://lenis.darkroom.engineering/), WebGL2 (`js/liquid-hero.js`), vanilla CSS keyframes |
 | **Hosting** | [GitHub Pages](https://pages.github.com/) |
 
 ---
@@ -58,6 +61,9 @@ Chaithu-Portfolio/
 ├── tailwind.config.js       # Tailwind CSS configuration with MD3 tokens
 ├── src/
 │   └── input.css            # Tailwind source input
+├── js/
+│   ├── liquid-hero.js       # WebGL2 liquid particle hero engine
+│   └── neural-sculpture.js  # Draws the hero sculpture at load
 ├── css/
 │   └── tailwind.css         # Compiled Tailwind output
 ├── images/
@@ -102,8 +108,8 @@ cd Chaithu-Portfolio
 # Edit styles in src/input.css or tailwind.config.js, then rebuild:
 npx tailwindcss@3.4.17 -c tailwind.config.js -i src/input.css -o css/tailwind.css --minify
 
-# Open index.html in your browser — no server required
-open index.html
+# Open index.html directly, or serve it locally
+python3 -m http.server 8000
 ```
 
 ### Watch Mode (auto-rebuild on changes)

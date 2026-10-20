@@ -30,6 +30,14 @@
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
     <meta name="theme-color" content="#131313" />
     <meta name="google-site-verification" content="jRf-fpfRbPsm40MipLQVskpzr5_cY0TvV_a2pB5LzCc" />
+    <!-- Motion flags: JS-only states (loader, entrance) never hide content without JS -->
+    <script>
+        (function () {
+            var d = document.documentElement;
+            d.classList.add('js');
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('motion', 'is-loading');
+        })();
+    </script>
     <link rel="stylesheet" href="css/tailwind.css?v=2" />
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;family=Roboto+Mono:wght@400;500&amp;display=swap"
@@ -278,122 +286,740 @@
             }
         }
 
-        /* Lamp effect — orange light bar + cone beams at top of hero */
-        .lamp-effect {
+        /* ── Hero: liquid particle sculpture ──────────────────────────── */
+        .hx-root {
+            position: relative;
+            height: 100svh;
+            min-height: 640px;
+            overflow: hidden;
+            isolation: isolate;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            background: #131313;
+            color: #e5e2e1;
+            touch-action: pan-y;
+        }
+
+        .hx-sr {
             position: absolute;
-            top: 0;
-            left: 0;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+        }
+
+        /* same warm atmosphere as #connect */
+        .hx-glow {
+            position: absolute;
+            z-index: 0;
+            left: 50%;
+            top: 12%;
+            width: 1000px;
+            max-width: 120vw;
+            height: 55%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: rgba(255, 187, 132, 0.08);
+            filter: blur(140px);
+            pointer-events: none;
+        }
+
+        .hx-stage {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hx-canvas {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
+            display: block;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .hx-fallback {
+            position: absolute;
+            display: block;
+            max-width: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            transition: opacity 0.8s ease;
+        }
+
+        /* with JS the canvas owns the sculpture; the image only shows if WebGL is unavailable */
+        html.js .hx-root:not([data-gl="off"]) .hx-fallback {
+            opacity: 0;
+        }
+
+        .hx-root[data-gl="on"] .hx-canvas {
+            opacity: 1;
+        }
+
+        .hx-hint {
+            position: absolute;
+            z-index: 2;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #ffbb84;
+            opacity: 0.6;
             pointer-events: none;
-            z-index: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .hx-hint::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ffbb84;
+            animation: hx-pulse 2.4s ease-in-out infinite;
+        }
+
+        .hx-root[data-touched="1"] .hx-hint,
+        .hx-root[data-gl="off"] .hx-hint {
+            opacity: 0;
+        }
+
+        @keyframes hx-pulse {
+
+            0%,
+            100% {
+                transform: scale(0.6);
+                opacity: 0.45;
+            }
+
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* one centred stack: headline above, sculpture in the middle, actions below */
+        .hx-top {
+            position: relative;
+            z-index: 3;
+            padding: clamp(84px, 11vh, 120px) clamp(20px, 4vw, 64px) 0;
+            text-align: center;
+        }
+
+        .hx-bottom {
+            position: absolute;
+            z-index: 3;
+            left: 0;
+            right: 0;
+            bottom: clamp(104px, 13vh, 128px);
+            width: min(640px, calc(100% - 40px));
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hx-pill {
+            display: inline-block;
+            margin-bottom: clamp(16px, 2.4vh, 26px);
+            padding: 6px 16px;
+            border-radius: 9999px;
+            background: rgba(255, 187, 132, 0.1);
+            border: 1px solid rgba(255, 187, 132, 0.2);
+            color: #ffbb84;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .hx-pill a {
+            color: #e5e2e1;
+            text-decoration: underline;
+            text-decoration-color: rgba(255, 187, 132, 0.4);
+            text-underline-offset: 3px;
+            transition: color 0.2s ease;
+        }
+
+        .hx-pill a:hover {
+            color: #ffbb84;
+        }
+
+        .hx-h1 {
+            margin: 0;
+            font-weight: 900;
+            font-size: clamp(40px, min(6.2vw, 10.5vh), 112px);
+            line-height: 0.92;
+            letter-spacing: -0.05em;
+        }
+
+        .hx-line {
+            display: block;
+            overflow: hidden;
+            padding: 0 0.04em 0.1em;
+            margin-bottom: -0.1em;
+        }
+
+        .hx-line > span {
+            display: inline-block;
+        }
+
+        /* the same moving amber gradient as "future together." */
+        .hx-accent {
+            background: linear-gradient(90deg, #f2994a, #ffbb84, #f2994a);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient 8s linear infinite;
+        }
+
+        .hx-role {
+            margin: 0 0 10px;
+            font-weight: 900;
+            font-size: clamp(20px, 1.8vw, 28px);
+            letter-spacing: -0.03em;
+            white-space: nowrap;
+        }
+
+        #typewriter {
+            color: #ffbb84;
+        }
+
+        .hx-caret {
+            display: inline-block;
+            width: 4px;
+            height: 0.9em;
+            margin-left: 4px;
+            vertical-align: -0.1em;
+            background: #ffbb84;
+            animation: hx-blink 1s steps(1) infinite;
+        }
+
+        @keyframes hx-blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .hx-body {
+            margin: 0 auto 26px;
+            max-width: 520px;
+            font-size: clamp(15px, 1.1vw, 17px);
+            line-height: 1.55;
+            color: #c6c6c6;
+        }
+
+        .hx-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 14px 22px;
+        }
+
+        .hx-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .hx-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 50px;
+            padding: 0 22px;
+            border-radius: 0.75rem;
+            background: #f2994a;
+            color: #2f1500;
+            font-weight: 700;
+            font-size: 15px;
+            white-space: nowrap;
+            box-shadow: 0 10px 30px rgba(242, 153, 74, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .hx-btn:hover {
+            box-shadow: 0 0 25px rgba(242, 153, 74, 0.45);
+        }
+
+        .hx-btn .material-symbols-outlined,
+        .hx-txt .material-symbols-outlined {
+            font-size: 18px;
+            transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        .hx-btn:hover .material-symbols-outlined {
+            transform: translateX(3px);
+        }
+
+        .hx-txt:hover .material-symbols-outlined {
+            transform: translateY(2px);
+        }
+
+        .hx-txt {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+            font-weight: 700;
+            font-size: 15px;
+            color: #e5e2e1;
+            border-bottom: 1px solid rgba(255, 187, 132, 0.35);
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .hx-txt:hover {
+            color: #ffbb84;
+            border-color: #ffbb84;
+        }
+
+        .hx-socials {
+            display: flex;
+            gap: 10px;
+        }
+
+        .hx-icon-btn {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 0.75rem;
+            background: #2a2a2a;
+            border: 1px solid rgba(84, 68, 56, 0.4);
+            color: #c6c6c6;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .hx-icon-btn:hover {
+            color: #ffbb84;
+            border-color: rgba(255, 187, 132, 0.3);
+            background: #353534;
+        }
+
+        .hx-root a:focus-visible {
+            outline: 2px solid #ffbb84;
+            outline-offset: 4px;
+        }
+
+        @media (max-width: 1023px) {
+            .hx-h1 {
+                font-size: clamp(38px, min(8.4vw, 8vh), 84px);
+            }
+        }
+
+        @media (max-width: 639px) {
+            .hx-hint,
+            .hx-divider {
+                display: none;
+            }
+
+            .hx-top {
+                padding-top: 84px;
+            }
+
+            .hx-pill {
+                font-size: 11px;
+            }
+
+            .hx-h1 {
+                font-size: clamp(34px, 10.4vw, 52px);
+            }
+
+            .hx-bottom {
+                bottom: 100px;
+            }
+
+            .hx-body {
+                font-size: 15px;
+                margin-bottom: 18px;
+            }
+        }
+
+        /* hidden until the entrance timeline plays them in */
+        html.motion .hx-line > span {
+            transform: translateY(110%);
+        }
+
+        html.motion [data-hx-in] {
+            opacity: 0;
+        }
+
+        /* the amber light line from the Connect signature (loader progress) */
+        /* the amber light line from the Connect signature (loader progress) */
+        .ld-lines {
+            position: relative;
+            height: 6px;
+        }
+
+        .ld-lines i {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, transparent, #f2994a, transparent);
+        }
+
+        .ld-lines i:nth-child(1) {
+            width: 75%;
+            height: 2px;
+            filter: blur(2px);
+        }
+
+        .ld-lines i:nth-child(2) {
+            width: 75%;
+            height: 1px;
+        }
+
+        .ld-lines i:nth-child(3) {
+            width: 25%;
+            height: 5px;
+            filter: blur(2px);
+            background: linear-gradient(90deg, transparent, #ffbb84, transparent);
+        }
+
+        .ld-lines i:nth-child(4) {
+            width: 25%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ffbb84, transparent);
+        }
+
+        /* ── Intro loader: an AI core streaking through the stack ─────── */
+        .hx-loader {
+            display: none;
+        }
+
+        html.motion .hx-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 24px clamp(64px, 12vh, 120px);
+            overflow: hidden;
+            background: radial-gradient(ellipse at 50% 42%, #1c1612 0%, #0e0e0e 60%);
+            color: #e5e2e1;
+            clip-path: inset(0 0 0 0);
+        }
+
+        html.is-loading,
+        html.is-loading body {
             overflow: hidden;
         }
 
-        .lamp-beam {
+        /* your stack, drifting past like clouds */
+        .ld-tokens span {
             position: absolute;
-            top: 0;
-            height: 16rem;
-            width: 15rem;
-            opacity: 0.4;
-            animation: lampExpand 1s ease-in-out 0.3s forwards;
-            -webkit-mask-image: linear-gradient(to bottom, white 20%, transparent);
-            mask-image: linear-gradient(to bottom, white 20%, transparent);
+            left: 0;
+            top: var(--y);
+            font-family: 'Roboto Mono', monospace;
+            font-size: var(--s, 14px);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            color: rgba(255, 187, 132, var(--o, 0.12));
+            animation: ld-drift var(--d) linear var(--delay) infinite;
         }
 
-        .lamp-beam-left {
-            right: 50%;
-            background-image: conic-gradient(from 70deg at right top, rgba(255, 187, 132, 0.45), transparent 50%);
+        @keyframes ld-drift {
+            from {
+                transform: translateX(110vw);
+            }
+
+            to {
+                transform: translateX(-30vw);
+            }
         }
 
-        .lamp-beam-right {
-            left: 50%;
-            background-image: conic-gradient(from 290deg at left top, transparent 50%, rgba(255, 187, 132, 0.45));
-        }
-
-        .lamp-glow-wide {
+        /* long speed streaks racing past the core */
+        .ld-streaks span {
             position: absolute;
-            top: 0.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 9rem;
-            width: 28rem;
-            max-width: 80vw;
-            border-radius: 9999px;
-            background: rgba(255, 187, 132, 0.18);
-            filter: blur(70px);
+            left: 0;
+            top: var(--y);
+            width: var(--w);
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 220, 195, 0.7), transparent);
+            animation: ld-streak var(--d) linear var(--delay) infinite;
         }
 
-        .lamp-glow-core {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 5rem;
-            width: 8rem;
-            border-radius: 9999px;
-            background: rgba(255, 187, 132, 0.35);
-            filter: blur(40px);
-            animation: lampCoreExpand 1s ease-in-out 0.3s forwards;
+        @keyframes ld-streak {
+            from {
+                transform: translateX(110vw);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(-40vw);
+                opacity: 0;
+            }
         }
 
-        .lamp-line {
+        .ld-ship {
             position: absolute;
-            top: 0;
+            top: 34%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .ld-body {
+            position: relative;
+            animation: ld-jitter 0.4s linear infinite;
+        }
+
+        @keyframes ld-jitter {
+            0% { transform: translate(2px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -3px) rotate(-1deg); }
+            20% { transform: translate(-2px, 0) rotate(1deg); }
+            30% { transform: translate(1px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 3px) rotate(-1deg); }
+            60% { transform: translate(-1px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-2px, -1px) rotate(1deg); }
+            90% { transform: translate(2px, 1px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        /* the core: an amber capsule with a sensor eye, nose to the right */
+        .ld-core {
+            position: relative;
+            width: 72px;
+            height: 30px;
+            border-radius: 10px 999px 999px 10px;
+            background: linear-gradient(90deg, #f2994a, #ffbb84 60%, #ffdcc3);
+            box-shadow: 0 0 24px rgba(242, 153, 74, 0.55), 0 0 70px rgba(242, 153, 74, 0.25);
+        }
+
+        .ld-core::before,
+        .ld-core::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            width: 22px;
+            height: 9px;
+            background: #f2994a;
+        }
+
+        /* fins */
+        .ld-core::before {
+            top: -7px;
+            border-radius: 6px 6px 0 0;
+            transform: skewX(-30deg);
+        }
+
+        .ld-core::after {
+            bottom: -7px;
+            border-radius: 0 0 6px 6px;
+            transform: skewX(30deg);
+        }
+
+        .ld-core i {
+            position: absolute;
+            top: 50%;
+            right: 13px;
+            width: 9px;
+            height: 9px;
+            margin-top: -4.5px;
+            border-radius: 50%;
+            background: #2f1500;
+            box-shadow: 0 0 0 2px rgba(47, 21, 0, 0.25);
+            animation: ld-blink 2.2s ease-in-out infinite;
+        }
+
+        @keyframes ld-blink {
+
+            0%,
+            92%,
+            100% {
+                transform: scaleY(1);
+            }
+
+            96% {
+                transform: scaleY(0.15);
+            }
+        }
+
+        /* exhaust lines peeling off behind the core */
+        .ld-trail span {
+            position: absolute;
+            right: 100%;
             height: 2px;
-            width: 15rem;
-            max-width: 70vw;
-            border-radius: 9999px;
-            background: #ffbb84;
-            box-shadow: 0 0 24px rgba(255, 187, 132, 0.8), 0 0 60px rgba(255, 187, 132, 0.4);
-            animation: lampExpand 1s ease-in-out 0.3s forwards;
+            border-radius: 2px;
+            background: linear-gradient(90deg, transparent, #ffbb84);
         }
 
-        @keyframes lampExpand {
-            to {
-                width: 30rem;
-                opacity: 1;
+        .ld-trail span:nth-child(1) { top: 4px; width: 30px; animation: ld-fazer1 0.2s linear infinite; }
+        .ld-trail span:nth-child(2) { top: 11px; width: 42px; animation: ld-fazer2 0.4s linear infinite; }
+        .ld-trail span:nth-child(3) { top: 18px; width: 26px; animation: ld-fazer3 0.4s linear infinite; animation-delay: -1s; }
+        .ld-trail span:nth-child(4) { top: 25px; width: 36px; animation: ld-fazer4 1s linear infinite; animation-delay: -1s; }
+
+        @keyframes ld-fazer1 { to { transform: translateX(-80px); opacity: 0; } }
+        @keyframes ld-fazer2 { to { transform: translateX(-100px); opacity: 0; } }
+        @keyframes ld-fazer3 { to { transform: translateX(-50px); opacity: 0; } }
+        @keyframes ld-fazer4 { to { transform: translateX(-150px); opacity: 0; } }
+
+        /* the signature from #connect: name over the amber light line, which fills as progress */
+        .ld-sign {
+            position: relative;
+            text-align: center;
+        }
+
+        .ld-status {
+            margin-bottom: clamp(12px, 2vh, 20px);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(255, 187, 132, 0.7);
+        }
+
+        .hx-loader-name {
+            display: inline-flex;
+            overflow: hidden;
+            font-weight: 900;
+            font-size: clamp(44px, 9vw, 128px);
+            line-height: 0.9;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            padding: 0 0.06em 0.05em;
+        }
+
+        .hx-loader-name span {
+            display: inline-block;
+            transform: translateY(105%);
+        }
+
+        .ld-lines {
+            width: min(760px, 86vw);
+            margin: 6px auto 0;
+        }
+
+        .ld-lines .ld-fill {
+            position: absolute;
+            inset: 0;
+            transform: scaleX(0);
+        }
+
+        .hx-loader-count {
+            margin-top: clamp(20px, 3vh, 32px);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.16em;
+            color: #a18d7f;
+        }
+
+        @media (max-width: 639px) {
+            .ld-ship {
+                top: 32%;
+            }
+
+            .ld-core {
+                width: 58px;
+                height: 24px;
+            }
+
+            .ld-trail span:nth-child(4) {
+                top: 20px;
             }
         }
 
-        @keyframes lampCoreExpand {
-            to {
-                width: 16rem;
-            }
+        /* ── Scroll progress: the same core rides the line ─────────────── */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 60;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #f2994a, #ffdcc3);
+            box-shadow: 0 0 10px rgba(255, 187, 132, 0.6);
+            transform: scaleX(0);
+            transform-origin: 0 50%;
+            pointer-events: none;
         }
 
-        @media (prefers-reduced-motion: reduce) {
+        .scroll-progress-head {
+            position: fixed;
+            top: -3px;
+            left: -14px;
+            z-index: 61;
+            width: 14px;
+            height: 8px;
+            border-radius: 3px 999px 999px 3px;
+            background: #ffdcc3;
+            box-shadow: 0 0 10px rgba(255, 187, 132, 0.9), 0 0 24px rgba(242, 153, 74, 0.6);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
 
-            .lamp-beam,
-            .lamp-line {
-                animation: none;
-                width: 30rem;
-                opacity: 1;
-            }
+        .scroll-progress-head.is-on {
+            opacity: 1;
+        }
 
-            .lamp-glow-core {
-                animation: none;
-                width: 16rem;
-            }
+        /* Lenis smooth scroll */
+        html.lenis,
+        html.lenis body {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
         }
 
         .reveal {
             opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(40px);
+            filter: blur(8px);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s cubic-bezier(0.22, 1, 0.36, 1), clip-path 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* headings wipe up from a mask instead of just fading; polygons (unlike inset())
+           can reach past the box, so glows and descenders are not cut off once revealed */
+        h2.reveal {
+            filter: none;
+            clip-path: polygon(-10% 130%, 110% 130%, 110% 130%, -10% 130%);
         }
 
         .reveal.visible {
             opacity: 1;
             transform: none;
+            filter: blur(0);
+        }
+
+        h2.reveal.visible {
+            clip-path: polygon(-10% -30%, 110% -30%, 110% 130%, -10% 130%);
         }
 
         @media (prefers-reduced-motion: reduce) {
             .reveal {
                 opacity: 1;
                 transform: none;
+                filter: none;
+                clip-path: none;
+                transition: none;
+            }
+
+            .hx-hint::before,
+            .hx-caret {
+                animation: none;
+            }
+
+            .hx-canvas,
+            .hx-fallback {
                 transition: none;
             }
         }
@@ -401,6 +1027,41 @@
 </head>
 
 <body class="bg-background text-on-background font-body selection:bg-primary/30 selection:text-primary">
+    <!-- Intro loader (only with motion enabled): an AI core streaking through the stack -->
+    <div class="hx-loader" aria-hidden="true">
+        <div class="ld-tokens">
+            <span style="--y:12%;--d:26s;--delay:-4s;--s:15px;--o:.14">LLM</span>
+            <span style="--y:22%;--d:34s;--delay:-20s;--s:12px;--o:.10">agents</span>
+            <span style="--y:30%;--d:22s;--delay:-9s;--s:20px;--o:.12">{ }</span>
+            <span style="--y:58%;--d:30s;--delay:-14s;--s:13px;--o:.12">RAG</span>
+            <span style="--y:66%;--d:38s;--delay:-2s;--s:16px;--o:.09">python</span>
+            <span style="--y:18%;--d:28s;--delay:-24s;--s:12px;--o:.08">SQL</span>
+            <span style="--y:50%;--d:42s;--delay:-30s;--s:12px;--o:.07">embeddings</span>
+            <span style="--y:8%;--d:46s;--delay:-12s;--s:11px;--o:.08">prompt → tool → answer</span>
+            <span style="--y:62%;--d:36s;--delay:-26s;--s:13px;--o:.07">automation</span>
+        </div>
+        <div class="ld-streaks">
+            <span style="--y:20%;--w:18vw;--d:0.9s;--delay:0s"></span>
+            <span style="--y:34%;--w:10vw;--d:0.6s;--delay:-0.3s"></span>
+            <span style="--y:47%;--w:24vw;--d:1.1s;--delay:-0.7s"></span>
+            <span style="--y:55%;--w:8vw;--d:0.7s;--delay:-0.2s"></span>
+            <span style="--y:72%;--w:16vw;--d:1s;--delay:-0.5s"></span>
+        </div>
+        <div class="ld-ship">
+            <div class="ld-body">
+                <div class="ld-trail"><span></span><span></span><span></span><span></span></div>
+                <div class="ld-core"><i></i></div>
+            </div>
+        </div>
+        <div class="ld-sign">
+            <div class="ld-status" data-loader-status>Loading models</div>
+            <div class="hx-loader-name"><span>Chaithanya</span></div>
+            <div class="ld-lines"><div class="ld-fill"><i></i><i></i><i></i><i></i></div></div>
+            <div class="hx-loader-count"><span data-loader-count>000</span> / 100</div>
+        </div>
+    </div>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="scroll-progress-head" aria-hidden="true"></div>
     <div id="mouse-glow"></div>
     <!-- TopNavBar -->
     <a href="#" class="brand-pill" aria-label="Back to top">Chaithu<span class="brand-dot">.</span></a>
@@ -422,74 +1083,33 @@
                 class="fas fa-envelope"></i></a>
     </nav>
     <main>
-        <!-- Hero Section -->
-        <section
-            class="min-h-[100svh] md:min-h-[921px] flex flex-col justify-center px-6 md:px-12 py-24 md:py-32 relative overflow-hidden">
-            <!-- Lamp glow (orange) -->
-            <div class="lamp-effect" aria-hidden="true">
-                <div class="lamp-beam lamp-beam-left"></div>
-                <div class="lamp-beam lamp-beam-right"></div>
-                <div class="lamp-glow-wide"></div>
-                <div class="lamp-glow-core"></div>
-                <div class="lamp-line"></div>
+        <!-- Hero Section — liquid particle sculpture (js/liquid-hero.js) -->
+        <section id="home" class="hx-root" data-hero aria-label="Introduction">
+            <div class="hx-glow" aria-hidden="true"></div>
+            <div class="hx-stage" data-hero-stage aria-hidden="true"></div>
+            <span class="hx-sr">Abstract sculpture of twisting amber filaments, like a neural network</span>
+            <div class="hx-hint" data-hero-hint data-touch-text="Touch the form" aria-hidden="true">Move across the form</div>
+
+            <div class="hx-top" data-hero-top>
+                <div class="hx-pill" data-hx-in>AI Engineer @ <a href="https://sydon.ai">Sydon.ai</a></div>
+                <h1 class="hx-h1">
+                    <span class="hx-line"><span>Building production AI</span></span>
+                    <span class="hx-line"><span class="hx-accent">&amp; intelligent workflows.</span></span>
+                </h1>
             </div>
-            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-                <div class="z-10 text-center md:text-left mt-12 md:mt-0">
-                    <div class="font-label text-primary tracking-widest uppercase mb-4 text-sm md:text-base">AI Engineer who</div>
-                    <h1 class="text-5xl md:text-6xl font-black tracking-tighter leading-tight mb-6">
-                        Building <span class="text-primary whitespace-nowrap">production AI</span> systems & <span
-                            class="underline decoration-primary decoration-4 underline-offset-4 whitespace-nowrap">intelligent
-                            workflows.</span>
-                    </h1>
-                    <p class="text-secondary text-xl mb-12 max-w-lg leading-relaxed">
-                        Turning AI capabilities into reliable software — from LLM-powered apps to scalable backend services.
-                    </p>
 
-                    <div class="mb-12">
-                        <h2
-                            class="text-4xl md:text-5xl font-black tracking-tighter text-on-surface mb-3 min-h-[96px] md:min-h-[60px] leading-tight">
-                            I'm a <span id="typewriter" class="whitespace-nowrap"></span><span
-                                class="inline-block align-middle w-[6px] h-[36px] md:h-[46px] ml-1 -mt-2 bg-[#ffbb84] animate-[pulse_1s_ease-in-out_infinite]"></span>
-                        </h2>
-                        <p class="text-secondary text-lg mt-4">Currently working as a <span
-                                class="font-bold text-[#ffbb84]">AI Engineer</span> @ <a href="https://sydon.ai"
-                                class="font-bold text-on-surface underline decoration-primary/40 underline-offset-4 hover:text-primary hover:decoration-primary transition-colors">Sydon.ai</a>
-                        </p>
+            <div class="hx-bottom" data-hero-bottom data-hx-in>
+                <p class="hx-role">I'm a <span id="typewriter"></span><span class="hx-caret" aria-hidden="true"></span></p>
+                <p class="hx-body">Turning AI capabilities into reliable software — from LLM-powered apps to scalable backend services.</p>
+                <div class="hx-actions">
+                    <a href="#works" class="hx-btn" data-magnetic>View my work <span class="material-symbols-outlined">arrow_forward</span></a>
+                    <a href="images/resume.pdf" class="hx-txt">Resume <span class="material-symbols-outlined">arrow_downward</span></a>
+                    <span class="hx-divider" aria-hidden="true"></span>
+                    <div class="hx-socials">
+                        <a href="https://www.linkedin.com/in/chaithanya04" aria-label="LinkedIn profile" class="hx-icon-btn" data-magnetic><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://github.com/Chaithanya-0414" aria-label="GitHub profile" class="hx-icon-btn" data-magnetic><i class="fab fa-github"></i></a>
+                        <a href="mailto:ponnekantichaithanya0414@gmail.com" aria-label="Send email" class="hx-icon-btn" data-magnetic><i class="fas fa-envelope"></i></a>
                     </div>
-
-                    <div class="flex flex-wrap justify-center md:justify-start items-center gap-6">
-                        <div class="flex gap-4">
-                            <a href="https://www.linkedin.com/in/chaithanya04" aria-label="LinkedIn profile"
-                                class="w-14 h-14 rounded-full border border-outline-variant bg-[#201f1f] flex items-center justify-center text-on-surface hover:border-[#ffbb84] hover:text-[#ffbb84] transition-all shadow-sm">
-                                <i class="fab fa-linkedin-in text-xl"></i>
-                            </a>
-                            <a href="https://github.com/Chaithanya-0414" aria-label="GitHub profile"
-                                class="w-14 h-14 rounded-full border border-outline-variant bg-[#201f1f] flex items-center justify-center text-on-surface hover:border-[#ffbb84] hover:text-[#ffbb84] transition-all shadow-sm">
-                                <i class="fab fa-github text-xl"></i>
-                            </a>
-                            <a href="mailto:ponnekantichaithanya0414@gmail.com" aria-label="Send email"
-                                class="w-14 h-14 rounded-full border border-outline-variant bg-[#201f1f] flex items-center justify-center text-on-surface hover:border-[#ffbb84] hover:text-[#ffbb84] transition-all shadow-sm">
-                                <i class="fas fa-envelope text-xl"></i>
-                            </a>
-                        </div>
-
-                        <a href="images/resume.pdf"
-                            class="bg-primary-container text-[#2f1500] px-8 py-4 rounded-xl font-bold flex items-center gap-3 hover:shadow-[0_0_25px_rgba(242,153,74,0.4)] transition-all transform hover:-translate-y-1 ml-4 shadow-lg">
-                            <i class="fas fa-file-alt text-xl"></i> Resume
-                        </a>
-                    </div>
-                </div>
-                <div class="relative hidden md:block">
-                    <div
-                        class="aspect-square rounded-full bg-surface-container-high relative overflow-hidden shadow-2xl">
-                        <img alt="P. Krishna Naga Chaithanya"
-                            class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                            src="images/profile.webp" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent">
-                        </div>
-                    </div>
-                    <!-- Decorative element -->
-                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-primary/20 rounded-xl blur-3xl"></div>
                 </div>
             </div>
         </section>
@@ -1528,6 +2148,11 @@
                 href="mailto:ponnekantichaithanya0414@gmail.com">Email</a>
         </div>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="js/neural-sculpture.js"></script>
+    <script src="js/liquid-hero.js"></script>
     <script>
         const glow = document.getElementById('mouse-glow');
         window.addEventListener('mousemove', (e) => {
@@ -1706,9 +2331,139 @@
             };
             window.addEventListener('scroll', toggleScrollTop, { passive: true });
             toggleScrollTop();
-            scrollTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            scrollTopBtn.addEventListener('click', () => scrollToTarget(0));
+        }
+
+        // ── Motion: intro loader → hero entrance, smooth scroll, scroll-linked transitions ──
+        const root = document.documentElement;
+        const motionOn = root.classList.contains('motion');
+        const hasGsap = !!(window.gsap && window.ScrollTrigger);
+        const heroEl = document.querySelector('[data-hero]');
+        const hero = heroEl && window.LiquidHero && window.NeuralSculpture
+            ? LiquidHero.mount(heroEl, { source: NeuralSculpture.render(), intro: motionOn })
+            : null;
+
+        // Smooth scroll (Lenis), driven by GSAP's ticker so ScrollTrigger stays in sync
+        let lenis = null;
+        if (motionOn && window.Lenis) {
+            lenis = new Lenis({ duration: 1.15, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+            if (hasGsap) {
+                gsap.registerPlugin(ScrollTrigger);
+                lenis.on('scroll', ScrollTrigger.update);
+                gsap.ticker.add((time) => lenis.raf(time * 1000));
+                gsap.ticker.lagSmoothing(0);
+            } else {
+                const lenisRaf = (time) => { lenis.raf(time); requestAnimationFrame(lenisRaf); };
+                requestAnimationFrame(lenisRaf);
+            }
+        }
+
+        function scrollToTarget(target) {
+            if (lenis) lenis.scrollTo(target, { duration: 1.4 });
+            else if (typeof target === 'number') window.scrollTo({ top: target, behavior: 'smooth' });
+            else target.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+            const id = link.getAttribute('href');
+            const target = id === '#' ? 0 : document.querySelector(id);
+            if (target === null) return;
+            e.preventDefault();
+            scrollToTarget(target);
+            if (id !== '#') history.replaceState(null, '', id);
+        });
+
+        // Thin progress line along the top edge
+        const progressBar = document.querySelector('.scroll-progress');
+        const progressHead = document.querySelector('.scroll-progress-head');
+        const updateProgress = () => {
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            const p = max > 0 ? window.scrollY / max : 0;
+            progressBar.style.transform = `scaleX(${p})`;
+            // the loader's core rides the front of the line
+            progressHead.style.transform = `translateX(${p * window.innerWidth}px)`;
+            progressHead.classList.toggle('is-on', p > 0.002);
+        };
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        updateProgress();
+
+        const finishIntro = () => {
+            root.classList.remove('is-loading');
+            if (lenis) lenis.start();
+        };
+
+        if (motionOn && hasGsap) {
+            if (lenis) lenis.stop();
+            const loader = document.querySelector('.hx-loader');
+            const counter = document.querySelector('[data-loader-count]');
+            const status = document.querySelector('[data-loader-status]');
+            const stages = [[0, 'Loading models'], [34, 'Warming up agents'], [68, 'Compiling portfolio'], [100, 'Ready']];
+            // the full loader plays once per session; later visits get a short wipe
+            let seen = false;
+            try { seen = sessionStorage.getItem('hx-intro') === '1'; sessionStorage.setItem('hx-intro', '1'); } catch (err) { }
+            const tally = { v: 0 };
+
+            const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+            if (!seen) {
+                tl.from('.ld-ship', { x: '-70vw', duration: 1, ease: 'expo.out' })
+                    .to('.hx-loader-name span', { y: 0, duration: 0.9 }, 0.1)
+                    .to(tally, {
+                        v: 100, duration: 1.8, ease: 'power2.inOut',
+                        onUpdate: () => {
+                            const v = Math.round(tally.v);
+                            counter.textContent = String(v).padStart(3, '0');
+                            const stage = stages.filter(([at]) => v >= at).pop()[1];
+                            if (status.textContent !== stage) status.textContent = stage;
+                        }
+                    }, 0.2)
+                    .to('.ld-lines .ld-fill', { scaleX: 1, duration: 1.8, ease: 'power2.inOut' }, 0.2)
+                    // the core punches out of frame as the page wipes in
+                    .to('.ld-ship', { x: '75vw', duration: 0.7, ease: 'power3.in' }, '+=0.1')
+                    .to('.hx-loader-name span', { y: '-105%', duration: 0.6, ease: 'expo.in' }, '<0.15');
+            }
+            tl.to(loader, { clipPath: 'inset(0 0 100% 0)', duration: 0.9, ease: 'expo.inOut' }, seen ? 0 : '-=0.25')
+                .set(loader, { display: 'none' })
+                .add(() => { if (hero) hero.start(); finishIntro(); }, '-=0.55')
+                .to('.hx-line > span', { y: 0, duration: 1.1, stagger: 0.1 }, '<0.15')
+                .fromTo('[data-hx-in]', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.08 }, '<0.3');
+
+            // safety net: never leave the page behind the loader
+            setTimeout(() => {
+                if (!root.classList.contains('is-loading')) return;
+                tl.progress(1);
+            }, 6000);
+
+            // Hero exits with depth: the headline drifts up a little faster than the page
+            // and dims slightly; the actions scroll normally so they stay readable
+            gsap.to('.hx-top', {
+                y: -80, opacity: 0.6, ease: 'none',
+                scrollTrigger: { trigger: heroEl, start: 'top top', end: 'bottom top', scrub: true }
             });
+            gsap.to('.hx-stage', {
+                opacity: 0.25, ease: 'none',
+                scrollTrigger: { trigger: heroEl, start: '30% top', end: 'bottom top', scrub: true }
+            });
+
+            // Magnetic CTAs (fine pointers only)
+            if (window.matchMedia('(pointer: fine)').matches) {
+                document.querySelectorAll('[data-magnetic]').forEach((el) => {
+                    const xTo = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3.out' });
+                    const yTo = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3.out' });
+                    el.addEventListener('mousemove', (e) => {
+                        const r = el.getBoundingClientRect();
+                        xTo((e.clientX - (r.left + r.width / 2)) * 0.3);
+                        yTo((e.clientY - (r.top + r.height / 2)) * 0.3);
+                    });
+                    el.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
+                });
+            }
+        } else {
+            // no motion (reduced-motion or the CDN failed): show everything as-is
+            root.classList.remove('motion');
+            finishIntro();
+            if (hero) hero.start();
         }
 
         // Scroll Reveal Animations
@@ -1723,10 +2478,14 @@
         ].join(', '));
 
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+            // headings start clipped to nothing, which an observer can never see intersect,
+            // so they are watched through their parent instead
+            const waiting = new Map();
             const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+                        waiting.get(entry.target).forEach(el => el.classList.add('visible'));
+                        waiting.delete(entry.target);
                         revealObserver.unobserve(entry.target);
                     }
                 });
@@ -1735,7 +2494,10 @@
             revealTargets.forEach((el, i) => {
                 el.classList.add('reveal');
                 el.style.transitionDelay = `${(i % 4) * 80}ms`;
-                revealObserver.observe(el);
+                const watched = el.matches('h2') ? el.parentElement : el;
+                if (!waiting.has(watched)) waiting.set(watched, []);
+                waiting.get(watched).push(el);
+                revealObserver.observe(watched);
             });
         }
     </script>
